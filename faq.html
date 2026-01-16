@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frequently Asked Questions</title>
+  <style>
+    /*
+      This file expects the HP Simplified font to be available locally or in
+      a `fonts/` folder next to this file. To use the font, place WOFF/WOFF2
+      files in `fonts/` and keep the local() names as shown.
+      Example font filenames: fonts/HPSimplified.woff2
+    */
+    @font-face {
+      font-family: 'HPSimplified';
+      src: local('HP Simplified'), local('HPSimplified'),
+           url('fonts/HPSimplified.woff2') format('woff2');
+      font-weight: 300 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root{
+      --bg: #030303;
+      --panel-bg: rgba(255,255,255,0.02);
+      --muted: #9aa0a0;
+      --accent: #8bd2c2;
+      --divider: rgba(255,255,255,0.05);
+      --container-w: 640px;
+    }
+
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#d7dfe0;
+      font-family: 'HPSimplified', 'Segoe UI', Tahoma, Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:48px 24px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--container-w);
+    }
+
+    header h1{
+      margin:0 0 8px 0;
+      font-size:20px;
+      letter-spacing:0.4px;
+      font-weight:700;
+      color:#f5f6f7;
+      border-bottom:1px solid var(--divider);
+      padding-bottom:14px;
+    }
+
+    .contact{
+      margin:10px 0 30px 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .faq-list{
+      background:transparent;
+    }
+
+    details{
+      margin:18px 0;
+      padding:18px 0;
+      border-bottom:1px solid var(--divider);
+    }
+
+    summary{
+      list-style:none;
+      outline:none;
+      cursor:pointer;
+      display:block;
+      font-size:16px;
+      font-weight:700;
+      color:var(--accent);
+      margin:0;
+      padding-right:28px;
+      position:relative;
+    }
+
+    summary::-webkit-details-marker{display:none}
+
+    summary::after{
+      content:'⌃';
+      position:absolute;
+      right:0;
+      top:3px;
+      color:var(--muted);
+      transform-origin:50% 50%;
+      transition:transform .18s ease;
+      font-size:14px;
+    }
+
+    details[open] summary::after{ transform: rotate(180deg); }
+
+    .answer{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    a{ color:var(--accent); text-decoration:none }
+    a:hover{ text-decoration:underline }
+
+    /* Responsive tweaks */
+    @media (max-width:720px){
+      :root{ --container-w: 100%; }
+      body{ padding:20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Frequently Asked Questions</h1>
+      <div class="contact">Please reach us at <a href="mailto:ccc@cccwireless.net">ccc@cccwireless.net</a> if you cannot find an answer to your question.</div>
+    </header>
+
+    <main class="faq-list">
+      <details>
+        <summary>Do you guys sell refurbished or new computers?</summary>
+        <div class="answer">Selling refurbished laptops and desktops allows us to properly test and put our input as repairmen on what the best parts are for you. We warranty our products for a year and give a two year warranty on the hard drives inside. However, we can order in new laptops or desktops in for you if you specifically request.</div>
+      </details>
+
+      <details>
+        <summary>Can I recycle my TV/CRT with you?</summary>
+        <div class="answer">No. Due to size restraints of new televisions and government restrictions on CRT's, we cannot. However you are free to bring anything else electronic. Printers, wires, appliances, etc.</div>
+      </details>
+
+      <details>
+        <summary>Can I pay over the phone?</summary>
+        <div class="answer">It is possible to purchase something over the phone, however to get an accurate display of our products and availability it is best to come in.</div>
+      </details>
+
+      <details>
+        <summary>I'm hacked, what do I do?</summary>
+        <div class="answer">Come in and get checked in for a tune up! Tune ups are 100 dollars and rid you completely of any malware, spyware, adware or remote access software.</div>
+      </details>
+
+      <details>
+        <summary>My laptop/desktop is running slow</summary>
+        <div class="answer">You might be eligible for a Solid State Drive Upgrade. Talk to a technician and have them check and see if you are on a slower, less reliable hard drive. If you are, we can get you on a Solid State Drive! The price can vary depending on storage. For an accurate quote, give us a call or come in.</div>
+      </details>
+
+      <details>
+        <summary>Do you fix Macbooks/Imac's?</summary>
+        <div class="answer">At the moment, we only support Windows Laptops and Desktops.</div>
+      </details>
+    </main>
+  </div>
+</body>
+</html>
