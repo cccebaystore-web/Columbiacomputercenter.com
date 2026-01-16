@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Columbia Computer Center — Home</title>
+    <style>
+        /* --- Simple Microcenter-like retail template (non-derivative) ---
+             Drop images onto any "dropzone" area to replace them.
+             To provide permanent defaults, place image files next to this file
+             and change the src attributes in the HTML below. */
+        :root{
+            --accent:#0072c6;
+            --muted:#9aa4b2;
+            --bg:#000;
+            --card:#0f0f0f;
+            --phone:#28a745;
+            --radius:8px;
+            font-family: "HP Simplified", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+        *{box-sizing:border-box}
+        body{margin:0;background:var(--bg);color:#d3d3d3}
+        header{background:var(--card);border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:20}
+        .topbar{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:12px}
+        .logo{font-weight:700;color:var(--accent);font-size:20px}
+        .search{flex:1;display:flex;gap:8px}
+        input[type="search"]{flex:1;padding:10px;border:1px solid #ddd;border-radius:6px}
+        .cart{padding:8px 12px;border-radius:6px;background:var(--accent);color:#fff}
+        nav{background:var(--card);border-top:1px solid rgba(255,255,255,0.04);padding:8px 0}
+        .navwrap{max-width:1200px;margin:0 auto;display:flex;gap:12px;padding:0 12px}
+        .navlink{padding:8px 10px;color:var(--muted);font-size:14px}
+        .container{max-width:1200px;margin:18px auto;padding:0 12px;display:grid;grid-template-columns:1fr;gap:18px}
+        aside{background:var(--card);padding:12px;border-radius:var(--radius);box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+        .filters h4{margin:6px 0 12px;font-size:14px}
+        .main{display:flex;flex-direction:column;gap:16px}
+        /* hero carousel */
+        .hero{background:transparent;border-radius:var(--radius);overflow:hidden;position:relative;display:block}
+        .slides{position:relative;height:360px;background:linear-gradient(180deg,#e9edf6,#fff);display:flex;align-items:center;justify-content:center}
+        .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .4s;opacity:0;pointer-events:none}
+        .slide.active{opacity:1;pointer-events:auto}
+        .hero img{max-width:100%;max-height:100%;object-fit:cover;display:block;border-radius:6px}
+        .hero-controls{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;pointer-events:none}
+        .btn{background:rgba(255,255,255,0.9);border:1px solid #ddd;padding:6px 8px;border-radius:6px;cursor:pointer;pointer-events:auto}
+        .indicators{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:6px}
+        .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.8);border:1px solid #ccc;cursor:pointer}
+        .dot.active{background:var(--accent)}
+        /* product grid */
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+        .card{background:var(--card);padding:10px;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,0.04);display:flex;flex-direction:column;gap:8px}
+        .imgwrap{height:140px;background:#1a1a1a;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+        .imgwrap img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+        .product-title{font-size:14px;color:inherit;margin:0}
+        .price{font-weight:700;color:var(--accent)}
+        .add{margin-top:auto;padding:8px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer}
+        /* dropzone overlay */
+        .drop-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px;background:rgba(255,255,255,0.06);opacity:0;transition:opacity .15s}
+        .dropzone.dragover .drop-overlay{opacity:1;background:rgba(0,114,198,0.12)}
+        .drop-zone-btn{position:absolute;right:8px;bottom:8px;background:rgba(255,255,255,0.9);border-radius:6px;padding:4px 6px;font-size:12px}
+        footer{max-width:1200px;margin:18px auto;padding:12px;color:var(--muted);font-size:13px}
+        /* responsive */
+        @media (max-width:920px){.container{grid-template-columns:1fr}}
+        @media (max-width:480px){.slides{height:220px}}
+        /* About section photos */
+        .about-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:12px 0 18px}
+        .about-photos .photo-card{background:#000;color:#fff;border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+        .about-photos .photo-img{height:160px;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden}
+        .about-photos img{width:100%;height:100%;object-fit:cover;display:block}
+        .about-photos .caption{padding:12px;text-align:center;color:#ddd;font-size:14px}
+        @media (max-width:920px){ .about-photos{grid-template-columns:1fr} .about-photos .photo-img{height:220px} }
+        /* Contact section styles (used when contact info is inserted into this page) */
+        .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+        .card.contact{padding:16px;border:1px solid rgba(255,255,255,0.04);border-radius:6px;background:var(--card);color:inherit}
+        .phone{font-size:1.25rem;font-weight:700;color:var(--phone)}
+        .address{white-space:pre-wrap;color:var(--muted)}
+        .hours{margin-top:8px;color:var(--muted)}
+        .back-link{display:inline-block;margin-top:18px;color:var(--accent);text-decoration:none}
+        .map-responsive{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:6px}
+        .map-responsive iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0}
+        @media (max-width:700px){.contact-grid{grid-template-columns:1fr}.map-responsive{padding-bottom:50%}}
+        /* Hide hero section (images/controls) per user request */
+        .hero{display:none !important}
+        /* Make mailto and tel links use phone green */
+        a[href^="mailto:"] , a[href^="tel:"]{ color:var(--phone); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="topbar">
+            <div style="display:flex;align-items:center;gap:18px;">
+                <a class="logo" href="ccc.html">Columbia Computer Center</a>
+            </div>
+            <div style="flex:1"></div>
+            <div style="display:flex;gap:8px;align-items:center">
+                <!-- optional small cart/search placeholders kept minimal -->
+            </div>
+        </div>
+        <nav>
+            <div class="navwrap">
+                <div style="display:flex;gap:8px;align-items:center">
+                    <a class="navlink" href="ccc.html">Home</a>
+                    <a class="navlink" href="storefront.html">Storefront Sales</a>
+                </div>
+
+                <div style="flex:1;text-align:center">
+                    <!-- center logo; replace src with small logo file if available -->
+                    <a href="ccc.html" aria-label="Home">
+                        <img src="logo-small.png" alt="Columbia Computer Center" style="height:28px;filter:brightness(0.9);">
+                    </a>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <a class="navlink" href="contact.html">Contact Us</a>
+                    <a class="navlink" href="about.html">About Us</a>
+                    <a class="navlink" href="faq.html">FAQ</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Filters removed per request -->
+
+        <section class="main">
+            <!-- About Us: primary homepage content -->
+            <article id="about" class="card" style="padding:16px;">
+                <h1 style="margin:0 0 8px;">About Us</h1>
+                <!-- About photos removed -->
+                <section style="color:var(--muted);line-height:1.5">
+                    <h3 style="margin:8px 0 4px;">Proud Ownership</h3>
+                    <p>David Hutchinson has been the proud owner of Columbia Computer Center since the opening on March 2nd, 2001. With over 20 years of running the business, he has always strived to provide customers with the best service possible.</p>
+
+                    <h3 style="margin:8px 0 4px;">Repair Services</h3>
+                    <p>We strive to provide the best repair services to all of our customers. At fair rates and with knowledge and understanding, we provide top of the line repair services.</p>
+
+                    <h3 style="margin:8px 0 4px;">Refurbished Desktops and Laptops</h3>
+                    <p>Refurbished computers at Columbia Computer Center don't skimp on quality. With Solid State Drives and meaningful precise installation of Windows 10 or 11, all of our devices are ready to go the second you leave the door.</p>
+
+                    <h3 style="margin:8px 0 4px;">Custom PCs: Satisfaction Guaranteed</h3>
+                    <p>Come in and order a Custom PC that fits your budget. Regardless of if it's gaming at the highest frames at home or editing and planning without any delay in the office, we can work with your budget and build a custom PC for you.</p>
+
+                    <h3 style="margin:8px 0 4px;">We do E-Recycling!</h3>
+                    <p>Recycle old or unwanted electronics, cords, or equipment! Just come in the doors and our staff will be happy to help you recycle your electronics.</p>
+
+                    <p class="phone" style="margin-top:12px;font-weight:700;">Columbia Computer Center — 573-442-9445</p>
+                </section>
+            </article>
+
+            <!-- HERO / Carousel with dropzones: drop an image file onto each slide to replace it.
+                         Images are persisted in localStorage so they reappear when you reload the page. -->
+            <div class="hero" aria-label="Promotions">
+                <div class="slides" id="carousel">
+                    <div class="slide active">
+                        <div class="dropzone" data-id="hero-1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative">
+                            <img id="hero-img-hero-1" src="" alt="Hero 1">
+                            <div class="drop-overlay">Drop image here or click to choose</div>
+                            <button class="drop-zone-btn" title="Replace image">Replace</button>
+                            <input type="file" accept="image/*" style="display:none">
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <div class="dropzone" data-id="hero-2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative">
+                            <img id="hero-img-hero-2" src="" alt="Hero 2">
+                            <div class="drop-overlay">Drop image here or click to choose</div>
+                            <button class="drop-zone-btn">Replace</button>
+                            <input type="file" accept="image/*" style="display:none">
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <div class="dropzone" data-id="hero-3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative">
+                            <img id="hero-img-hero-3" src="" alt="Hero 3">
+                            <div class="drop-overlay">Drop image here or click to choose</div>
+                            <button class="drop-zone-btn">Replace</button>
+                            <input type="file" accept="image/*" style="display:none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- hero controls removed (prev/next buttons) -->
+                <div class="indicators" id="dots">
+                    <div class="dot active" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                    <div class="dot" data-index="2"></div>
+                </div>
+            </div>
+
+                        <!-- Contact info (inserted from contact.html) -->
+                        <section class="contact-section">
+                            <div class="card contact">
+                                <h2>Contact Us</h2>
+                                <p>If you need assistance, contact us anytime at <strong>573-442-9445</strong> or email <a href="mailto:CCC@CCCwireless.net">CCC@CCCwireless.net</a>.</p>
+
+                                <div class="contact-grid">
+                                    <div>
+                                        <section class="card">
+                                            <h3>Columbia Computer Center</h3>
+                                            <p class="address">
+1122 Lakeview Avenue
+Columbia, Missouri 65201
+United States
+                                            </p>
+
+                                            <p class="phone">Phone: <a href="tel:+15734429445">573-442-9445</a></p>
+
+                                            <h4>Hours</h4>
+                                            <div class="hours">
+                                                <p><strong>Monday - Friday:</strong> 9:00 am – 5:00 pm</p>
+                                                <p><strong>Saturday:</strong> 10:00 am – 4:00 pm</p>
+                                                <p><em>Open today: 09:00 am – 05:00 pm</em></p>
+                                            </div>
+
+                                            <a class="back-link" href="ccc.html">&larr; Back to Home</a>
+
+                                            <div class="map">
+                                                <div class="map-responsive">
+                                                    <iframe src="https://www.google.com/maps?q=1122+Lakeview+Avenue+Columbia+MO+65201&output=embed" allowfullscreen="" loading="lazy"></iframe>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <aside class="card">
+                                        <h3>Quick Contact</h3>
+                                        <p class="phone">573-442-9445</p>
+                                        <p><a href="mailto:CCC@CCCwireless.net">CCC@CCCwireless.net</a></p>
+                                        <p style="font-size:0.9rem; color:var(--muted); margin-top:12px;">1122 Lakeview Avenue<br/>Columbia, MO 65201</p>
+                                    </aside>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Products grid removed -->
+        </section>
+    </main>
+
+    <footer>
+        © Columbia Computer Center • 573-442-9445
+    </footer>
+
+    <script>
+        // Minimal carousel
+        (function(){
+            const slides = Array.from(document.querySelectorAll('.slide'));
+            const dots = Array.from(document.querySelectorAll('.dot'));
+            let i = 0;
+            function show(n){
+                slides.forEach((s,idx)=>s.classList.toggle('active', idx===n));
+                dots.forEach((d,idx)=>d.classList.toggle('active', idx===n));
+                i=n;
+            }
+            // Prev/Next buttons removed; no direct prev/next handlers.
+            dots.forEach(d=>d.addEventListener('click', ()=> show(Number(d.dataset.index))));
+            setInterval(()=> show((i+1)%slides.length), 6000);
+        })();
+
+        // Drag & drop + file picker for dropzones.
+        (function(){
+            const dropzones = Array.from(document.querySelectorAll('.dropzone'));
+            const storageKeyPrefix = 'ccc-img:';
+            function readFileToDataURL(file, cb){
+                const fr = new FileReader();
+                fr.onload = ()=> cb(fr.result);
+                fr.readAsDataURL(file);
+            }
+            function setImageForZone(id, dataURL){
+                // update <img> inside the dropzone (by id naming convention used in HTML)
+                const img = document.querySelector(`#${id.startsWith('p-') ? 'img-'+id : 'hero-img-'+id}`);
+                if(img) img.src = dataURL;
+                try{ localStorage.setItem(storageKeyPrefix+id, dataURL); }catch(e){}
+            }
+            // Load persisted images
+            dropzones.forEach(zone=>{
+                const id = zone.dataset.id;
+                const saved = localStorage.getItem(storageKeyPrefix+id);
+                const img = zone.querySelector('img');
+                if(saved){ img.src = saved; }
+                else {
+                    // placeholder default: tiny SVG with text telling user to drop
+                    const placeholder = 'data:image/svg+xml;utf8,'+encodeURIComponent(
+                        `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450"><rect width="100%" height="100%" fill="#eef2f7"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9aa4b2" font-size="22">Drop image here (id: ${id})</text></svg>`
+                    );
+                    if(img) img.src = placeholder;
+                }
+            });
+
+            dropzones.forEach(zone=>{
+                const id = zone.dataset.id;
+                const input = zone.querySelector('input[type=file]');
+                const overlayClassHandler = (on)=> zone.classList.toggle('dragover', on);
+
+                zone.addEventListener('click', e=>{
+                    // open file picker
+                    if(input) input.click();
+                });
+                if(input){
+                    input.addEventListener('change', e=>{
+                        const f = input.files && input.files[0];
+                        if(f) readFileToDataURL(f, dataURL=> setImageForZone(id,dataURL));
+                    });
+                }
+
+                zone.addEventListener('dragenter', e=>{ e.preventDefault(); overlayClassHandler(true); });
+                zone.addEventListener('dragover', e=>{ e.preventDefault(); overlayClassHandler(true); });
+                zone.addEventListener('dragleave', e=>{ overlayClassHandler(false); });
+                zone.addEventListener('drop', e=>{
+                    e.preventDefault();
+                    overlayClassHandler(false);
+                    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+                    if(f && f.type.startsWith('image/')){
+                        readFileToDataURL(f, dataURL=> setImageForZone(id,dataURL));
+                    }
+                });
+            });
+
+            // Simple reset helper: press R to clear local images (for development)
+            window.addEventListener('keydown', e=>{
+                if(e.key.toLowerCase()==='r' && (e.ctrlKey || e.metaKey)){
+                    if(confirm('Clear stored images?')){
+                        Object.keys(localStorage).filter(k=>k.startsWith(storageKeyPrefix)).forEach(k=>localStorage.removeItem(k));
+                        location.reload();
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
